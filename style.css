@@ -2,3 +2,10 @@ body canvas{
   border:1px solid goldenrod;
   background-color:black;
 }
+audio
+{
+  position:absolute;
+  left:1040px;
+  top:55%;
+  border:1px solid goldenrod;
+}
