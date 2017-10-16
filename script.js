@@ -2,12 +2,10 @@ var canvas=document.querySelector('canvas');
 var ctx=canvas.getContext('2d');
 var audio=document.querySelector('audio');
 var counter=0;
-audio.volume=0.0;
+audio.volume=0.3;
 var x=audio.volume;
+var y;
 
-audio.onclick= ()=>{
-    console.log(1);
-};
 /*var timer=setInterval(()=>{
     while(1)
     {
@@ -16,7 +14,7 @@ audio.onclick= ()=>{
         clearInterval(timer);
     }
     },3000);*/
-
+    
 
 function Circle(i,j)
 {
@@ -28,7 +26,9 @@ function Circle(i,j)
     this.sense=true;
     this.color=`rgba(${Math.floor(255*Math.random())},${Math.floor(255*Math.random())},${Math.floor(255*Math.random())},${Math.random()}`;
     //this.speed=j==i?10*j+10:2*j+2;;;;
-    this.speed=((audio.volume)*1.5+1)*j;
+    //this.speed=((audio.volume)*1.5+1)*j;
+    accel(this,j);
+
 }
 
 ctx.translate(500,500);
@@ -58,6 +58,7 @@ function draw()
    elapsed=now-then;
    if(elapsed>fpsInterval)
 {
+   
     ctx.save();
     ctx.translate(-500,-500);
     ctx.clearRect(0,0,1000,1000);
@@ -75,8 +76,8 @@ function draw()
             var c=new Circle(index,jindex);
             ctx.fillStyle=c.color;
             //ctx.rotate(`${c.speed*(2*Math.PI*(timer.getSeconds()-seconds)/60 +2*Math.PI*(timer.getMilliseconds()-milli)/60000)}`);
-   
             ctx.rotate(`${c.speed*(2*Math.PI*(Date.now()-milli)/60000)}`);
+            y=c.speed*(2*Math.PI*(Date.now()-milli)/60000);
             ctx.translate(c.x,c.y);
             ctx.arc(0,0,c.radius,0,2*Math.PI,true);
             ctx.fill();
@@ -89,16 +90,14 @@ function draw()
         }
     }
     then = now;    
-    counter++;
+    counter++;  
     //console.log(counter++);
     //console.log(audio.volume);
 }
-    
-    
-    
     window.requestAnimationFrame(()=>{draw();});
     //console.log(audio.volume);
    // setInterval(()=>{draw(i,j,speed);},0.00000000000000000001);
+ 
 }
 function animateFPS(fps)
 {
@@ -110,3 +109,26 @@ audio.onclick=function(e)
 {
     console.log(e);
 };
+function accel(y,j)
+{
+     if(!audio.paused)
+     {
+         y.speed=((audio.volume)*1.5+1)*j;
+     }
+     else
+     milli=Date.now();
+}
+audio.onvolumechange=()=>{
+   /* var y=audio.volume;
+    var change=y-x;
+    var changePerCall=(y-x)/10;
+    var count=0;
+   var timer= setInterval(()=>{
+         audio.volume+=changePerCall;
+        if(count==9)
+        clearInterval(timer);
+        count++;
+    },200);
+    x=audio.volume;*/
+    console.log(1);
+  };
